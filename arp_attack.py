@@ -72,4 +72,4 @@ except KeyboardInterrupt:
 	kill_s()
 	sys.exit(0)
 
-#帮我改代码吧，这个不能退出
+#help me change the code it can't exit
