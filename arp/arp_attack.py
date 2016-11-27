@@ -9,11 +9,11 @@ from optparse import OptionParser
 usage = 'Usage:%prog -i interface -t target_ip -c packet_count -f file_path'
 
 parser = OptionParser(usage)
-parser.add_option('-i',dest="interface",help='Specify the interface to use(must)')
-parser.add_option('-t',dest='target',help='Specify a particular host to ARP posion(must)')
-parser.add_option('-d',dest='disguise',help='Specify a host you want to disguise(must)')
-parser.add_option('-c',dest='packet_c',help="How many packets you want to catch")
-parser.add_option('-f',dest='file_p',help='The packets path you want to save')
+parser.add_option('-i',dest="interface",help='Specify the interface to use')
+parser.add_option('-t',dest='target',help='Specify a particular host to ARP posion')
+parser.add_option('-d',dest='disguise',help='Specify a host you want to fake')
+parser.add_option('-c',dest='packet_c',help="How many packets you want to catch(optional)")
+parser.add_option('-f',dest='file_p',help='The packets path you want to save(optional)')
 (options,args)=parser.parse_args()
 interface = options.interface
 target = options.target
@@ -23,12 +23,15 @@ file_path = options.file_p
 
 if target is None:
 	print 'target ip can\'t be none'
+	parser.print_help()
 	sys.exit(0)
 elif interface is None:
 	print 'Interface can\'t be none'
+	parser.print_help()
 	sys.exit(0)
 elif disguise is None:
-	print 'Must disguise oneself'
+	print 'Must fake oneself'
+	parser.print_help()
 	sys.exit(0)
 
 if packet_count is None:
