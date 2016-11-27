@@ -71,6 +71,7 @@ try:
 	packets = sniff(count=packet_count,iface=interface)
 	wrpcap(file_path,packets)
 	kill_s()
+	sys.exit()
 except KeyboardInterrupt:
 	kill_s()
 	sys.exit(0)
