@@ -8,7 +8,9 @@ if len(sys.argv) < 2 or len(sys.argv) > 2:
 
 iface = sys.argv[1]
 
+os.system("ifconfig "+iface+" down")
 os.system("iwconfig "+iface+" mode monitor")
+os.system("ifconfig "+iface+" up")
 
 def dump_packet(pkt):
     if not pkt.haslayer(Dot11Beacon) and \

