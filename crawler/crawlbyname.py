@@ -23,7 +23,7 @@ url="http://www.meitulu.com/t/%s"%name
 html = getHtml(url)
 error=re.findall('<div class="tishi_t">.+?</div>',html)
 if len(error)>0:
-    print "The page is not exist"
+    print "The name is not exist"
     sys.exit(0)
 
 url_list = re.findall('<li>\n<a href="(.+?)" target=',html)
@@ -31,5 +31,6 @@ sequence_n=re.findall("\d{1,4}",str(url_list))
 for i in sequence_n:
     try:
         os.system('python crawlbypage.py -b %s -o %s'%(i,i))
+        print i
     except:
         continue
