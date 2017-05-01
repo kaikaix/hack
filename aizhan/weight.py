@@ -57,9 +57,15 @@ class Query(object):
         soup = bs(r.content,'lxml')
 
         for type in types:
-            a = soup.find_all(name='a',attrs={'id':type})
-            img = a[0].find_all(name='img')
-            br[type] = re.findall('(\d+)',img[0]['src'])[0]
+            while True:
+                a = soup.find_all(name='a',attrs={'id':type})
+                img = a[0].find_all(name='img')
+                print img
+                try:
+                    br[type] = re.findall('(\d+)',img[0]['src'])[0]
+                    break
+                except:
+                    continue
 
         return br
 
@@ -95,8 +101,8 @@ def main():
                 print "\n"
                 exit()
     else:
-        query.weight(website)
-        print levels
+        br = query.weight(website)
+        print br
 
 if __name__ == "__main__":
     main()        
